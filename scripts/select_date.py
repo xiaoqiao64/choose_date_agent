@@ -44,6 +44,11 @@ def folk_enabled(name, rules):
     return rules["民俗开关"].get(name, True)
 
 
+def _hit(day, name):
+    """神煞是否命中：月家神煞落在 xiongsha，民俗类落在 extra。"""
+    return name in day["xiongsha"] or day["extra"].get(name) is True
+
+
 def hard_taboos(day, rels, cfg, rules, level):
     """返回该日的淘汰原因列表，空列表表示存活。
 
@@ -62,19 +67,20 @@ def hard_taboos(day, rels, cfg, rules, level):
     if "*" in off:
         return reasons
 
-    for name in rules["通用硬禁忌"]["凶煞"]:
-        if name not in off and name in day["xiongsha"]:
-            detail = day["extra"].get(name)
-            reasons.append("犯%s%s" % (name, "（%s）" % detail if detail else ""))
+    for name in rules["通用硬禁忌"]["凶煞"] + rules["通用硬禁忌"]["民俗"]:
+        if name in off or not folk_enabled(name, rules) or not _hit(day, name):
+            continue
+        detail = day["extra"].get(name)
+        note = "（%s）" % detail if isinstance(detail, str) else ""
+        reasons.append("犯%s%s" % (name, note))
 
     if "出局建星" not in off and day["zhixing"] in cfg["出局建星"]:
         reasons.append("建星值%s，本事由不取" % day["zhixing"])
 
     for name in cfg["专属大忌"]:
-        if name in off or not folk_enabled(name, rules):
+        if name in off or not folk_enabled(name, rules) or not _hit(day, name):
             continue
-        if name in day["xiongsha"] or day["extra"].get(name) is True:
-            reasons.append("犯本事由专属大忌%s" % name)
+        reasons.append("犯本事由专属大忌%s" % name)
 
     allowed = level["行嫁月允许"]
     status = day["extra"].get("行嫁月")
