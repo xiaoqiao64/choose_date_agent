@@ -1,0 +1,31 @@
+program.md
+  s_12c4eb577e4d8a::t_8b2c42335be6d0 237-240,242
+scripts/rules.json
+  s_12c4eb577e4d8a::t_283471fbd04a93 135-140
+scripts/select_date.py
+  s_12c4eb577e4d8a::t_ff7de7938e10eb 153-155,160,162-164
+  s_12c4eb577e4d8a::t_682483cf868af6 312
+  s_12c4eb577e4d8a::t_ffb5d3f39c18a5 236
+scripts/almanac.py
+  s_12c4eb577e4d8a::t_2c471fb791821a 354-356
+  s_12c4eb577e4d8a::t_2b1df55cacfd29 322,326
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "649ab900ca0a78dc0b6ce42954e1255fa6fcd83d",
+  "prompts": {},
+  "logical_commit_id": "649ab900ca0a78dc0b6ce42954e1255fa6fcd83d",
+  "sessions": {
+    "s_12c4eb577e4d8a": {
+      "agent_id": {
+        "tool": "cursor",
+        "id": "e1ef703b-9cbc-49eb-91ad-465ad90dba9c",
+        "model": "claude-opus-5"
+      },
+      "human_author": "xiaoqiao <xiaoqiao64@126.com>",
+      "total_additions": 1726,
+      "total_deletions": 181
+    }
+  }
+}
