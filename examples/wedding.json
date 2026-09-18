@@ -1,0 +1,11 @@
+{
+  "matter": "嫁娶",
+  "matter_raw": "嫁女儿，办婚礼",
+  "range": {"start": "2026-10-01", "end": "2026-12-31"},
+  "people": [
+    {"name": "新娘", "role": "primary", "gender": "female", "birth": "1999-07-08", "birth_time": "14:30"},
+    {"name": "新郎", "role": "primary", "gender": "male", "birth": "1998-03-12"},
+    {"name": "女方母亲", "role": "secondary", "birth": "1970-05-02"}
+  ],
+  "top_n": 3
+}

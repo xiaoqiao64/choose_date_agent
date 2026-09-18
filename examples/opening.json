@@ -1,0 +1,10 @@
+{
+  "matter": "开市",
+  "matter_raw": "新店开业",
+  "range": {"start": "2027-02-01", "end": "2027-04-30"},
+  "people": [
+    {"name": "店主", "role": "primary", "gender": "male", "birth": "1985-06-14", "birth_time": "08:20"},
+    {"name": "合伙人", "role": "secondary", "birth": "1988-11-30"}
+  ],
+  "top_n": 3
+}

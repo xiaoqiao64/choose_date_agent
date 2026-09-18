@@ -1,0 +1,12 @@
+{
+  "matter": "丧葬",
+  "matter_raw": "奶奶去世，选出殡下葬的日子",
+  "range": {"start": "2026-09-20", "end": "2026-10-20"},
+  "people": [
+    {"name": "亡者（奶奶）", "role": "primary", "gender": "female", "birth": "1938-11-20"},
+    {"name": "主丧孝子（长子）", "role": "primary", "gender": "male", "birth": "1962-04-17"},
+    {"name": "次子", "role": "secondary", "birth": "1965-08-03"},
+    {"name": "长孙", "role": "secondary", "birth": "1990-01-25"}
+  ],
+  "top_n": 3
+}
