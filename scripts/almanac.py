@@ -31,6 +31,10 @@ QING_LONG_START = {"子": "申", "午": "申", "丑": "戌", "未": "戌", "寅"
                    "卯": "寅", "酉": "寅", "辰": "辰", "戌": "辰", "巳": "午", "亥": "午"}
 
 MONTH_ZHI = "寅卯辰巳午未申酉戌亥子丑"     # 正月建寅……腊月建丑
+# 月建对应的节。不可改用 lunar-python 的 getPrevJie()：它按交节时刻比对，
+# 而月建按日期边界推，交节当日二者会打架（如 2026-11-07 月建已进亥，getPrevJie 仍报寒露）。
+JIE_OF_MONTH = dict(zip(MONTH_ZHI, ["立春", "惊蛰", "清明", "立夏", "芒种", "小暑",
+                                    "立秋", "白露", "寒露", "立冬", "大雪", "小寒"]))
 SEASON = {"寅": "春", "卯": "春", "辰": "春", "巳": "夏", "午": "夏", "未": "夏",
           "申": "秋", "酉": "秋", "戌": "秋", "亥": "冬", "子": "冬", "丑": "冬"}
 
@@ -207,8 +211,7 @@ def day_chart(date, bride_zodiac=None):
     return {
         "solar": date.isoformat(),
         "weekday": "周" + "一二三四五六日"[date.weekday()],
-        "lunar": ("闰" if lunar.getMonth() < 0 else "") + lunar.getMonthInChinese()
-                 + "月" + lunar.getDayInChinese(),
+        "lunar": lunar.getMonthInChinese() + "月" + lunar.getDayInChinese(),
         "lunar_month": lunar_month,
         "lunar_day": lunar_day,
         "leap_month": lunar.getMonth() < 0,
@@ -216,7 +219,7 @@ def day_chart(date, bride_zodiac=None):
                    "month": lunar.getMonthInGanZhi(), "day": day_gz},
         "jieqi_month": {"month_zhi": month_zhi,
                         "month_index": MONTH_ZHI.index(month_zhi) + 1,
-                        "current_jie": lunar.getPrevJie().getName(),
+                        "current_jie": JIE_OF_MONTH[month_zhi],
                         "season": SEASON[month_zhi]},
         "zhixing": zhixing,
         "tianshen": tianshen,
