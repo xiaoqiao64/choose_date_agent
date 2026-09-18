@@ -150,16 +150,18 @@ def score_day(day, rels, hours, cfg, rules):
     return sum(x["delta"] for x in detail), detail
 
 
-def pick_hours(day, cfg, avoid_zodiacs, limit=2):
-    """第八步：先取黄道时，剔除日破与冲主事人之时，再按事由偏好与吉神多寡排序。"""
-    all_hours = A.hour_chart(day, avoid_zodiacs)
+def pick_hours(day, cfg, rules, avoid_zodiacs, limit=2):
+    """第八步：先取白天的黄道时，剔除日破与冲主事人之时，再按事由偏好与吉神多寡排序。"""
+    all_hours = A.hour_chart(day, avoid_zodiacs, rules["择时"]["白天时辰"])
     pref = cfg["偏好时辰"]
     usable = [h for h in all_hours if not h["excluded"]]
     pool = [h for h in usable if h["tianshen_type"] == "黄道"]
     note = None
-    if not pool:
+    if not pool and usable:
         pool = usable
-        note = "当日黄道时尽被日破或冲主事人之冲所占，以下为降级取用的黑道时，须向用户点明"
+        note = "当日白天的黄道时尽被日破或冲主事人之冲所占，以下为降级取用的黑道时，须向用户点明"
+    elif not usable:
+        note = "当日白天时段无可用吉时（黄道时或落在夜间，或被日破、冲主事人所占），此日不宜择时行事，须向用户点明"
     pool.sort(key=lambda h: (h["zhi"] not in pref, -len(h["reasons"]), A.zi(h["zhi"])))
     picked = pool[:limit]
     for h in picked:
@@ -231,7 +233,7 @@ def run_plan(config):
     avoid = [p["zodiac"] for p in primaries]
     out_days, alive = [], []
     for c, rels, reasons in screened:
-        hours, hour_note, all_hours = pick_hours(c, cfg, avoid)
+        hours, hour_note, all_hours = pick_hours(c, cfg, rules, avoid)
         record = dict(c)
         record["relations"] = rels
         record["eliminated"] = bool(reasons)
@@ -307,7 +309,7 @@ def main():
         rules = load_rules()
         _, cfg = resolve_matter(args.matter, rules)
         day = A.day_chart(A.parse_date(args.date))
-        picked, note, all_hours = pick_hours(day, cfg, args.avoid_zodiac)
+        picked, note, all_hours = pick_hours(day, cfg, rules, args.avoid_zodiac)
         data = {"solar": day["solar"], "day_ganzhi": day["ganzhi"]["day"],
                 "picked": picked, "note": note, "all_hours": all_hours}
 

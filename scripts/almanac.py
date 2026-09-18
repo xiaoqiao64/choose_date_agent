@@ -319,10 +319,11 @@ def tai_sui(day, person):
     return None
 
 
-def hour_chart(day, avoid_zodiacs=()):
+def hour_chart(day, avoid_zodiacs=(), daytime=None):
     """以日支起青龙、查时支定时辰黄道黑道，并标注冲破与贵人三合六合。
 
     黑道时不作一票否决，只记入 demerits：择时时优先取黄道，黄道尽被冲破时仍可降级取用。
+    daytime 给定可用时支时，此外的时辰记为排除，避免选出夜间无法行事的钟点。
     """
     dz, dg = day["day_zhi"], day["day_gan"]
     # 冲某人生肖的是与其年支相冲的那个时支
@@ -350,5 +351,8 @@ def hour_chart(day, avoid_zodiacs=()):
         if hz in avoid:
             item["excluded"] = True
             item["exclude_reasons"].append("时支%s冲主事人生肖%s" % (hz, avoid[hz]))
+        if daytime is not None and hz not in daytime:
+            item["excluded"] = True
+            item["exclude_reasons"].append("%s时（%s）非白天可行事之时" % (hz, HOUR_RANGE[hz]))
         out.append(item)
     return out
